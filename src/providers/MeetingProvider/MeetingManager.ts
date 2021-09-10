@@ -43,6 +43,12 @@ function noOpDeviceLabelHook(): Promise<MediaStream> {
   return Promise.resolve(new MediaStream());
 }
 
+class DemoActiveSpeakerPolicy extends DefaultActiveSpeakerPolicy {
+  prioritizeVideoSendBandwidthForActiveSpeaker() {
+    return false;
+  }
+}
+
 export class MeetingManager implements AudioVideoObserver {
   meetingSession: DefaultMeetingSession | null = null;
 
@@ -417,7 +423,8 @@ export class MeetingManager implements AudioVideoObserver {
     };
 
     this.audioVideo?.subscribeToActiveSpeakerDetector(
-      new DefaultActiveSpeakerPolicy(),
+      // new DefaultActiveSpeakerPolicy(),
+      new DemoActiveSpeakerPolicy(),
       this.activeSpeakerListener
     );
   }
